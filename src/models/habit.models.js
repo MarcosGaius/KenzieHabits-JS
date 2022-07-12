@@ -1,15 +1,40 @@
-export default class Habit {
-  static urlBase = "https://habits-kenzie.herokuapp.com/api";
-
-  static async getAllHabits() {
-    return await fetch(`${this.urlBase}/habits`, {
-      method: "GET",
+export default class Habits {
+  static baseUrl = "https://habits-kenzie.herokuapp.com/api";
+  static async updateHabit(id, updateObj) {
+    return await fetch(`${this.baseUrl}/habits/${id}`, {
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NTc1NjUxNzcsImV4cCI6MTY1ODE2OTk3Nywic3ViIjoiMzkifQ.p2ol9UTDLjKcoewcIrwOk7vrgy2AP2EUt2EBcDRxQSA`
+        Authorization: `Bearer ${localStorage.getItem("@kenziehabits:token")}`
+      },
+      body: JSON.stringify(updateObj),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        return res
+      })
+      .catch((err) => {
+        console.error(err);
+        return err;
+      });
+  }
+
+  static async setHabitDone(id) {
+    return await fetch(this.baseUrl + `/habits/complete/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem("@kenziehabits:token")}`
       }
-    }).then(res => res.json())
-      .then(res => res)
-      .catch(e => console.error(e));
+    })
+    .then(async (res) => {
+       return await res.json()
+    })
+    .catch((err) => {
+      console.error(err)
+      return err
+    })
+
+    //falta realizar testes
   }
 }
