@@ -1,4 +1,4 @@
-class Habits {
+export default class Habits {
   static baseUrl = "https://habits-kenzie.herokuapp.com/api";
   static async updateHabit(id, updateObj) {
     return await fetch(`${this.baseUrl}/habits/${id}`, {
