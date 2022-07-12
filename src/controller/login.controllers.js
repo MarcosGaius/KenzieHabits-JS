@@ -1,47 +1,59 @@
+import Notification from "./notification.controller.js";
+import User from "../models/user.models.js";
+
 export default class Login {
   static form = document.querySelector("form");
 
-  static init() {
-    this.form.addEventListener("submit", this.submitForm)
+  static setFormListener() {
+    this.form.addEventListener("submit", this.tryToLogin)
   }
 
-  static submitForm(e) {
+  static async tryToLogin(e) {
     e.preventDefault();
 
     const formElements = Array.from(e.target.elements);
     const data = {};
+    
+    for(let i=0; i<formElements.length; i++){
+      const currentElement = formElements[i];
+      
+      if(currentElement.name !== ""){
+        const { value, name } = currentElement;
 
-    formElements.forEach((element) => {
-      if (element.name !== "") {
-        const { value, name } = element;
-
-        if(Login.checkingFields(element)) {
+        if(Login.checkFieldValidity(currentElement)){
           data[name] = value;
-        } else {
-          Login.fieldInvalid(name);
-          return
         }
-
+        else {
+          Login.alertFieldInvalid(currentElement.name);
+          return;
+        }
       }
-    });
+    }
 
-    //Adicionar requisção de login pegando o data
-
+    try {
+      const loginResponse = await User.logUserIn(data.email, data.password);
+      console.log(loginResponse)
+    }
+    catch(error){
+      console.log(error);
+    }
   }
 
-  static checkingFields(field) {
-    if (!field.validity.valid && field.value.trim() === "") return false;
+  static checkFieldValidity(field) {
+    if (!field.validity.valid || field.value.trim() === "") return false;
     return true
   }
 
-  static fieldInvalid(fieldName) {
+  static alertFieldInvalid(fieldName) {
     if(fieldName === "email") {
-      //adicionar função para criar a notificação de erro
+      const invalidEmailNot = Notification.createNotification("Email inválido.", false);
+      Notification.showNotification(invalidEmailNot);
       return
     }
     
     if (fieldName === "password") {
-      //adicionar função para criar a notificação de erro
+      const invalidPasswordNot = Notification.createNotification("Senha inválida.", false);
+      Notification.showNotification(invalidPasswordNot);
       return
     }
   }
