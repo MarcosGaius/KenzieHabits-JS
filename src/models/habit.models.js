@@ -5,15 +5,18 @@ export default class Habits {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${JSON.parse(
-          localStorage.getItem("@kenziehabits:token")
-        )}`,
+        Authorization: `Bearer ${localStorage.getItem("@kenziehabits:token")}`
       },
       body: JSON.stringify(updateObj),
     })
       .then((res) => res.json())
-      .then((res) => res)
-      .catch((err) => console.error(err));
+      .then((res) => {
+        return res
+      })
+      .catch((err) => {
+        console.error(err);
+        return err;
+      });
   }
 
   static async setHabitDone(id) {
@@ -24,7 +27,9 @@ export default class Habits {
         Authorization: `Bearer ${localStorage.getItem("@kenziehabits:token")}`
       }
     })
-    .then((res) => res.json())
+    .then(async (res) => {
+       return await res.json()
+    })
     .catch((err) => {
       console.error(err)
       return err
