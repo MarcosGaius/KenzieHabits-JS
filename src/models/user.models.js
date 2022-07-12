@@ -10,7 +10,9 @@ export default class User {
           localStorage.getItem("@kenziehabits:token")
         )}`,
       },
-      body: JSON.stringify(editObj),
+      body: JSON.stringify({
+        usr_img: editObj,
+      }),
     })
       .then((res) => res.json())
       .then((data) => data)
