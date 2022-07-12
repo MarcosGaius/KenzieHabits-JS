@@ -1,4 +1,3 @@
-import Notification from "../controller/notification.controller.js";
+import Login from "../controller/login.controllers.js";
 
-const teste = Notification.createNotification("Login bem sucedido.", true);
-Notification.showNotification(teste);
+Login.setFormListener();
