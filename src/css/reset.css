@@ -47,3 +47,12 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+
+label {
+    font-family: 'Inter', sans-serif;
+    color: var(--grey-1);
+}
+
+input {
+    font-family: 'Inter', sans-serif;
+}
