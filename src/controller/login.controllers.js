@@ -1,3 +1,5 @@
+import User from "../models/user.models.js";
+
 export default class Login {
   static form = document.querySelector("form");
 
@@ -5,7 +7,7 @@ export default class Login {
     this.form.addEventListener("submit", this.submitForm)
   }
 
-  static submitForm(e) {
+  static async submitForm(e) {
     e.preventDefault();
 
     const formElements = Array.from(e.target.elements);
@@ -25,7 +27,8 @@ export default class Login {
       }
     });
 
-    //Adicionar requisção de login pegando o data
+    await User.logUserIn(data);
+    // adicionar notificação de erro caso o email e senha não existam
 
   }
 

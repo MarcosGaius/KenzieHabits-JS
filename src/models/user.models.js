@@ -1,18 +1,14 @@
 export default class User {
   static baseUrl = "https://habits-kenzie.herokuapp.com/api";
 
-  static async logUserIn(email, password) {
-    const logInData = {
-      email: email,
-      password: password,
-    };
+  static async logUserIn(data) {
 
     const response = await fetch(this.baseUrl + "/userLogin", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(logInData),
+      body: JSON.stringify(data),
     })
       .then((res) => res.json())
       .then((res) => {
@@ -23,7 +19,7 @@ export default class User {
         localStorage.setItem("@kenziehabits:token", res.token);
 
         //falta método de redirecionamento
-        
+        console.log(res)
         return res;
       })
       .catch((err) => {
