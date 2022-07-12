@@ -46,5 +46,3 @@ export default class Login {
     }
   }
 }
-
-Login.init()
