@@ -8,6 +8,10 @@
     --grey-4: #E9ECEF;
     --grey-5: #F1F3F5;
     --grey-6: #F8F9FA;
+    --success-secondary: 86, 207, 142;
+    --success-primary: 230, 248, 238;
+    --error-primary: #f87070;
+    --error-secondary: #e64747;
 }
 
 .boxShadow {
@@ -28,10 +32,6 @@
 
 .mainButton:hover {
     background-color: var(--main-blue);
-    --success-secondary: 86, 207, 142;
-    --success-primary: 230, 248, 238;
-    --error-primary: #f87070;
-    --error-secondary: #e64747;
 }
 
 ::-webkit-scrollbar {
@@ -52,6 +52,7 @@
 .notificationWrapper {
     position: fixed;
     width: 100%;
+    top: 0;
 }
 
 
@@ -135,7 +136,7 @@
 }
 
 .notificationText__subtitle {
-    display: flex;
+    flex-grow: 1;
     font-size: 0.9rem;
     overflow-y: auto;
 }
