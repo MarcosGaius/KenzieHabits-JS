@@ -4,19 +4,35 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kenzie Habit</title>
+    <title>Kenzie Habit - Login</title>
+    <link rel="stylesheet" href="/src/css/reset.css">
+    <link rel="stylesheet" href="/src/css/components.css">
+    <link rel="stylesheet" href="/src/css/style.css">
+    <link rel="stylesheet" href="src/css/index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="src/css/index.css">
-    <link rel="stylesheet" href="src/css/components.css">
-    <link rel="stylesheet" href="src/css/reset.css">
+    <script type="module" src="src/scripts/index.scripts.js"></script>
   </head>
   <body>
-    <!-- <form action="">
-      <input type="email" name="email" id="email">
-      <input type="password" name="password" id="password">
-      <button type="submit">Login</button>
-    </form> -->
+    <main class="loginContainer boxShadow">
+      <aside class="loginContainer__details">
+        <h2>KenzieHabit</h2>
+        <h3>O aplicativo <span>número 1</span> em acompanhamento de hábitos</h3>
+        <p>Prepare-se para uma nova experiência!</p>
+      </aside>
+      <div class="loginContainer__formWrapper">
+        <h3>Login</h3>
+        <form class="loginForm">
+          <label for="email">Usuário</label>
+          <input type="email" name="email" id="email" placeholder="Digite seu e-mail">
+          <label for="password">Senha</label>
+          <input type="password" name="password" id="password" placeholder="Digite sua senha">
+          <button class="mainButton loginButton" id="loginFormButton">Entrar</button>
+        </form>
+      </div>
+    </main>
   </body>
 </html>
