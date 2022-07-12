@@ -8,14 +8,7 @@ export default class Habits {
   static async updateHabit(id, updateObj) {
     return await fetch(`${this.baseUrl}/habits/${id}`, {
       method: "PATCH",
-<<<<<<< HEAD
       headers: this.headers,
-=======
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("@kenziehabits:token")}`
-      },
->>>>>>> 76eabcaaa68c9540d38e0082a033cbd7e32c1f92
       body: JSON.stringify(updateObj),
     })
       .then((res) => res.json())
