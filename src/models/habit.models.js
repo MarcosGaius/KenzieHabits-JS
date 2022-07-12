@@ -1,14 +1,14 @@
 export default class Habits {
   static baseUrl = "https://habits-kenzie.herokuapp.com/api";
+  static headers = {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${localStorage.getItem("@kenziehabits:token")}`
+  };
+  
   static async updateHabit(id, updateObj) {
     return await fetch(`${this.baseUrl}/habits/${id}`, {
       method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${JSON.parse(
-          localStorage.getItem("@kenziehabits:token")
-        )}`,
-      },
+      headers: this.headers,
       body: JSON.stringify(updateObj),
     })
       .then((res) => res.json())
@@ -19,17 +19,25 @@ export default class Habits {
   static async setHabitDone(id) {
     return await fetch(this.baseUrl + `/habits/complete/${id}`, {
       method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem("@kenziehabits:token")}`
-      }
+      headers: this.headers
     })
     .then((res) => res.json())
     .catch((err) => {
       console.error(err)
       return err
     })
+  }
 
-    //falta realizar testes
+  static async createNewHabit(habitObj) {
+    return await fetch(this.baseUrl + "/habits", {
+      method: "POST",
+      headers: this.headers,
+      body: JSON.stringify(habitObj)
+    })
+    .then((res) => res.json())
+    .catch((err) => {
+      console.error(err)
+      return err
+    })
   }
 }
