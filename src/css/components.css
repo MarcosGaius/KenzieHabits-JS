@@ -1,0 +1,152 @@
+:root {
+    --main-blue: #4150D2;
+    --secondary-blue: #415AF3;
+    --ligth-blue: #D7E4FB;
+    --grey-1: #212529;
+    --grey-2: #343A40;
+    --grey-3: #ADB5BD;
+    --grey-4: #E9ECEF;
+    --grey-5: #F1F3F5;
+    --grey-6: #F8F9FA;
+}
+
+.boxShadow {
+    box-shadow: 0px 4px 40px -10px rgba(0, 0, 0, 0.25);
+}
+
+.mainButton {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 0.9rem;
+    background-color: var(--secondary-blue);
+    border: none;
+    color: #fff;
+    padding: 0.7rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.mainButton:hover {
+    background-color: var(--main-blue);
+    --success-secondary: 86, 207, 142;
+    --success-primary: 230, 248, 238;
+    --error-primary: #f87070;
+    --error-secondary: #e64747;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    background: #6d6d6db2; 
+}
+
+.notificationWrapper {
+    position: fixed;
+    width: 100%;
+}
+
+
+@media screen and (min-width: 576px) {
+    .notificationWrapper {
+        position: fixed;
+        z-index: 3;
+        right: 0;
+        width: initial;
+    }
+}
+
+.notificationCard {
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    justify-content: space-between;
+    border-radius: 5px;
+    width: 90%;
+    max-height: 10rem;
+    outline: 2px solid rgb(var(--success-secondary));
+    background-color: rgb(var(--success-primary));
+    animation: moveOpen 1s ease;
+    margin: 1rem auto;
+}
+
+@media screen and (min-width: 576px) {
+    .notificationCard {
+        gap: 1rem;
+        margin: 1rem;
+        display: flex;
+        min-width: 380px;
+        max-width: 380px;
+    }
+}
+
+.notificationCard--error {
+    outline: 2px solid var(--error-secondary);
+    background-color: var(--error-primary);
+    color: #FFF;
+}
+
+.notificationImage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(var(--success-secondary));
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+}
+
+.notificationImage--error {
+    background-color: var(--error-secondary);
+
+}
+
+.notificationImage img {
+    width: 50%;
+}
+
+.notificationText {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    gap: 0.4rem;
+    flex-grow: 1;
+    max-width: 70%;
+    height: 3rem;
+}
+
+@media screen and (min-width: 576px) {
+    .notificationText {
+        max-width: 80%;
+    }
+}
+
+.notificationText__title {
+    font-weight: 600;
+}
+
+.notificationText__subtitle {
+    display: flex;
+    font-size: 0.9rem;
+    overflow-y: auto;
+}
+
+
+@keyframes moveOpen {
+    from {
+        transform: translateX(100%);
+    }
+    
+    to {
+        transform: translateX(0);
+    }
+}
