@@ -1,4 +1,4 @@
-class User {
+export default class User {
   static baseUrl = "https://habits-kenzie.herokuapp.com/api";
 
   static async editUserData(editObj) {
@@ -16,6 +16,11 @@ class User {
     })
       .then((res) => res.json())
       .then((data) => data)
-      .catch((err) => console.log(err));
+      .catch((err) => console.error(err));
+  }
+
+  static logUserOut() {
+    localStorage.removeItem("@kenziehabits:token");
+    Redirect.loginPage();
   }
 }
