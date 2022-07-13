@@ -3,6 +3,20 @@ import Access from "../controller/access.controllers.js";
 import User from "../models/user.models.js"
 import Notification from "../controller/notification.controller.js";
 
+(
+    () => {
+        const token = localStorage.getItem("@kenziehabits:token");
+        
+        if(token != null){
+            if(Access.isTokenExpired(token)){
+                const tokenExpiredNot = Notification.createNotification("Sessão expirada, logue-se novamente.", false);
+                Notification.showNotification(tokenExpiredNot);
+                return;
+            }
+        }
+    }
+)();
+
 document.getElementById("loginFormButton").onclick = async (e) => {
     e.preventDefault();
 
