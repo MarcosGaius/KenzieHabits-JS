@@ -40,12 +40,36 @@ export default class Form {
       Notification.showNotification(invalidPasswordNot);
       return
     }
-
-    //adicionar mais nomes de form.
-
-    // else if(fieldName === "") {
-
-    // }
+    else if(fieldName === "title") {
+      const invalidTitleNot = Notification.createNotification("Título inválido.", false);
+      Notification.showNotification(invalidTitleNot);
+      return
+    }
+    else if(fieldName === "description") {
+      const invalidDescriptionNot = Notification.createNotification("Descrição inválida.", false);
+      Notification.showNotification(invalidDescriptionNot);
+      return
+    }
+    else if(fieldName === "category") {
+      const invalidCategoryNot = Notification.createNotification("Categoria inválida.", false);
+      Notification.showNotification(invalidCategoryNot);
+      return
+    }
+    else if(fieldName === "name") {
+      const invalidNameNot = Notification.createNotification("Nome inválido.", false);
+      Notification.showNotification(invalidNameNot);
+      return
+    }
+    else if(fieldName === "urlImage") {
+      const invalidImageNot = Notification.createNotification("Imagem inválida.", false);
+      Notification.showNotification(invalidImageNot);
+      return
+    }
+    else {
+      const genericNot = Notification.createNotification("Verifique os campos e tente novamente.", false);
+      Notification.showNotification(genericNot);
+      return
+    }
   }
 }
 

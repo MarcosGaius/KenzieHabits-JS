@@ -18,6 +18,10 @@
     box-shadow: 0px 4px 40px -10px rgba(0, 0, 0, 0.25);
 }
 
+.boxShadow--strong {
+    box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.25);
+}
+
 .mainButton {
     font-family: 'Inter', sans-serif;
     font-weight: 500;
@@ -49,105 +53,115 @@
     background: #6d6d6db2; 
 }
 
-.notificationWrapper {
-    position: fixed;
-    width: 100%;
-    top: 0;
-}
-
-
-@media screen and (min-width: 576px) {
-    .notificationWrapper {
-        position: fixed;
-        z-index: 3;
-        right: 0;
-        width: initial;
-    }
-}
-
 .notificationCard {
-    font-family: 'Inter', sans-serif;
-    display: flex;
-    align-items: center;
-    padding: 1rem;
-    justify-content: space-between;
-    border-radius: 5px;
-    width: 90%;
-    max-height: 10rem;
-    outline: 2px solid rgb(var(--success-secondary));
-    background-color: rgb(var(--success-primary));
-    animation: moveOpen 1s ease;
-    margin: 1rem auto;
+    position: fixed;
+    z-index: 3;
+    top: 0;
+    width: 100%;
+    height: fit-content;
+    overflow: hidden;
+    transition: all 1s;
 }
 
 @media screen and (min-width: 576px) {
     .notificationCard {
-        gap: 1rem;
-        margin: 1rem;
-        display: flex;
-        min-width: 380px;
-        max-width: 380px;
+        max-width: 450px;
+        right: 0;
+        width: fit-content;
     }
 }
 
-.notificationCard--error {
-    outline: 2px solid var(--error-secondary);
-    background-color: var(--error-primary);
-    color: #FFF;
-}
 
-.notificationImage {
+.notificationCard__inner {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: rgb(var(--success-secondary));
-    width: 3rem;
-    height: 3rem;
-    border-radius: 50%;
-}
-
-.notificationImage--error {
-    background-color: var(--error-secondary);
-
-}
-
-.notificationImage img {
-    width: 50%;
-}
-
-.notificationText {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    gap: 0.4rem;
-    flex-grow: 1;
-    max-width: 70%;
-    height: 3rem;
+    gap: 1.5rem;
+    background-color: white;
+    min-width: unset;
+    height: fit-content;
+    max-height: 5rem;
+    min-height: 4.5rem;
+    padding: 0.5rem;
+    border-radius: 5px;
+    margin: 1rem; 
+    animation: moveOpenMobile 1s ease;
 }
 
 @media screen and (min-width: 576px) {
-    .notificationText {
-        max-width: 80%;
+    .notificationCard__inner {
+        min-width: 20rem;
+        animation: moveOpen 1s ease;
+        margin: 1rem;
     }
 }
 
-.notificationText__title {
-    font-weight: 600;
+
+.notification__detail {
+    display: flex;
+    width: 5px;
+    height: auto;
+    border-radius: 5px;
 }
 
-.notificationText__subtitle {
+.notificationSuccess {
+    background-color: rgb(var(--success-primary));
+}
+
+.notificationError {
+    background-color: var(--error-secondary);
+}
+
+.notificationCard__text {
+    display: flex;
+    flex-direction: column;
     flex-grow: 1;
-    font-size: 0.9rem;
-    overflow-y: auto;
+    max-width: 85%;
+    justify-content: center;
+    padding: 2% 0;
 }
 
+@media screen and (min-width: 576px) {
+    .notificationCard__text {
+        min-width: 20rem;
+        margin-right: 2rem;
+        max-height: 200px;
+    }
+}
+
+.notificationLabel {
+    font-weight: 600;
+    font-size: 1rem;
+    flex-grow: 1;
+    display: flex;
+    align-items: flex-end;
+}
+
+.notificationContent {
+    overflow: auto;
+    color: var(--text-grey);
+    font-size: 0.9rem;
+    flex-grow: 1;
+}
 
 @keyframes moveOpen {
     from {
         transform: translateX(100%);
+        margin-left: 0; 
     }
     
     to {
         transform: translateX(0);
+        margin-left: 1rem; 
+    }
+}
+
+@keyframes moveOpenMobile {
+    from {
+        transform: translateY(-100%);
+        margin-top: 0; 
+    }
+    
+    to {
+        transform: translateY(0);
+        margin-top: 1rem; 
     }
 }
