@@ -1,3 +1,5 @@
+import User from "../models/user.models.js";
+
 export default class Modal {
   static createModalTemplate(modalH2 = "placeholder - título") {
     const body = document.querySelector("body");
@@ -26,7 +28,7 @@ export default class Modal {
   }
   
   static showUserEditModal() {
-    this.createModalTemplate("Editar perfil");
+    Modal.createModalTemplate("Editar perfil");
 
     const userData = JSON.parse(localStorage.getItem("@kenziehabits:userdata"));
 
@@ -55,10 +57,21 @@ export default class Modal {
     urlImageDiv.append(urlImageLabel, urlImageInput);
     modalForm.append(nameDiv, urlImageDiv);
     modalDivButtons.append(saveChangesBtn);
+
+    saveChangesBtn.onclick = () => {
+      User.editUserData({
+        usr_name: nameInput.value,
+        usr_image: urlImageInput.value
+      })
+      .then((res) => {
+        window.location.reload()
+      })
+      .catch((err) => console.error(err))
+    }
   }
 
   static showNewHabitModal() {
-    this.createModalTemplate("Criar hábito");
+    Modal.createModalTemplate("Criar hábito");
 
     const modalForm = document.querySelector(".modal__form");
     const modalDivButtons = document.querySelector(".modal__buttons");
