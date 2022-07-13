@@ -34,7 +34,7 @@ export default class User {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(logInData),
     })
       .then((res) => res.json())
       .then((res) => {

@@ -29,10 +29,19 @@ export default class Login {
         }
       }
     }
-    
+
     try {
       const loginResponse = await User.logUserIn(data.email, data.password);
-      console.log(loginResponse)
+
+      if(typeof loginResponse.message === "undefined") {
+        // adicionar redirecionamento
+
+        return
+      }
+
+      const unauthorizedLogin = Notification.createNotification(loginResponse.message, false);
+      Notification.showNotification(unauthorizedLogin);
+
     }
     catch(error){
       console.log(error);
