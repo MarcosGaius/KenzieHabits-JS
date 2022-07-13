@@ -5,7 +5,7 @@ export default class Access {
   static redirectToLoginPage() {
     window.location.href = this.loginUrl
   }
-  static redirectToHomePag() {
+  static redirectToHomePage() {
     window.location.href = this.homeUrl
   }
 

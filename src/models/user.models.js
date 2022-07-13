@@ -1,3 +1,5 @@
+import Access from "../controller/access.controllers.js";
+
 export default class User {
   static baseUrl = "https://habits-kenzie.herokuapp.com/api";
   static async editUserData(editObj) {
@@ -19,8 +21,9 @@ export default class User {
   }
 
   static logUserOut() {
+    localStorage.removeItem("@kenziehabits:userdata");
     localStorage.removeItem("@kenziehabits:token");
-    Redirect.loginPage();
+    Access.redirectToLoginPage()
   }
 
   static async logUserIn(email, password) {
