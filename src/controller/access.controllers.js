@@ -14,7 +14,7 @@ export default class Access {
     const decodedJSON = JSON.parse(atob(payload));
     const currentTime = Date.now();
     decodedJSON.exp = parseInt(`${decodedJSON.exp}000`);
-
+    
     if(decodedJSON.exp < currentTime){
         return true;
     }
