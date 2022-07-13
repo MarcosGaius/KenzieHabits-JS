@@ -10,9 +10,7 @@ export default class User {
           localStorage.getItem("@kenziehabits:token")
         )}`,
       },
-      body: JSON.stringify({
-        usr_img: editObj,
-      }),
+      body: JSON.stringify(editObj),
     })
       .then((res) => res.json())
       .then((data) => data)
@@ -46,7 +44,7 @@ export default class User {
         localStorage.setItem("@kenziehabits:token", res.token);
 
         //falta método de redirecionamento
-        
+
         return res;
       })
       .catch((err) => {
@@ -56,7 +54,6 @@ export default class User {
 
     return response;
   }
-
 }
 
 // User.logUserIn(

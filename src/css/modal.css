@@ -18,9 +18,6 @@
     border-radius: 8px;
     width: 31rem;
     padding: 2rem;
-
-    position: fixed;
-    z-index: 1;
 }
 
 .modal__header {
@@ -83,7 +80,7 @@
     background: var(--grey-3);
 }
 
-.mainButton--insert {
+.mainButton--insert, .mainButton--saveChanges {
     width: 100%;
 }
 
@@ -104,7 +101,14 @@
     font-weight: 600;
 }
 
+.cancel__deletion:hover {
+    background: var(--grey-3);
+}
+
 .confirm__deletion {
     background: var(--error-secondary);
-    
+}
+
+.confirm__deletion:hover {
+    background: var(--error-primary);
 }
