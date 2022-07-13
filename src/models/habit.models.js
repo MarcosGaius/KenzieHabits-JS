@@ -5,6 +5,23 @@ export default class Habits {
     Authorization: `Bearer ${localStorage.getItem("@kenziehabits:token")}`
   };
   
+  static async getDoneHabits() {
+    return await fetch(`${this.baseUrl}/habits/`, {
+      method: "GET",
+      headers: this.headers
+    })
+    .then(async (res) => {
+      if(!res.ok){ throw ({status: res.status, statusText: res.statusText, message: res.message});}
+
+      res = await res.json();
+
+      const doneHabits = res.filter((habit) => habit.habit_status)
+
+      return doneHabits;
+    })
+    .catch((err) => {return err});
+  }
+
   static async updateHabit(id, updateObj) {
     return await fetch(`${this.baseUrl}/habits/${id}`, {
       method: "PATCH",
