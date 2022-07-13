@@ -83,7 +83,7 @@
     background: var(--grey-3);
 }
 
-.mainButton--insert {
+.mainButton--insert, .mainButton--saveChanges {
     width: 100%;
 }
 
