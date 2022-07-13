@@ -2,9 +2,13 @@ import Form from "../controller/form.controllers.js";
 import Access from "../controller/access.controllers.js";
 import User from "../models/user.models.js"
 import Notification from "../controller/notification.controller.js";
+import Habits from "../models/habit.models.js";
 
 (
-    () => {
+    async () => {
+        const habitos = await Habits.getAllHabits();
+        console.log("~ habitos", habitos)
+
         const token = localStorage.getItem("@kenziehabits:token");
         
         if(token != null){

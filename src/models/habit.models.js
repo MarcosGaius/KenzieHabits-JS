@@ -64,4 +64,30 @@ export default class Habits {
       return err
     })
   }
+
+  static async getAllHabits() {
+    return await fetch(`${this.baseUrl}/habits`, {
+      method: "GET",
+      headers: this.headers
+    })
+    .then(async (res) => {
+      if(!res.ok){ throw ({status: res.status, statusText: res.statusText, message: res.message});}
+
+      res = await res.json();
+      
+      return res;
+    })
+    .catch((err) => {return err});
+  }
+
+  static async deleteHabit(id) {
+    return await fetch(`${this.baseUrl}/habits/${id}`, {
+      method: "DELETE",
+      headers: this.headers
+    })
+    .then((res) => res.json())
+    .catch((err) => {
+      return err
+    })
+  }
 }
