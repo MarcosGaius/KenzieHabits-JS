@@ -1,4 +1,5 @@
 import Notification from "./notification.controller.js";
+import Access from "./access.controllers.js";
 import User from "../models/user.models.js";
 
 export default class Login {
@@ -34,9 +35,7 @@ export default class Login {
       const loginResponse = await User.logUserIn(data.email, data.password);
 
       if(typeof loginResponse.message === "undefined") {
-        // adicionar redirecionamento
-
-        return
+        Access.redirectToHomePag()
       }
 
       const unauthorizedLogin = Notification.createNotification(loginResponse.message, false);
@@ -44,7 +43,7 @@ export default class Login {
 
     }
     catch(error){
-      console.log(error);
+      console.error(error);
     }
   }
 
