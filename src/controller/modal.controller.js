@@ -1,4 +1,7 @@
+import Habits from "../models/habit.models.js";
 import User from "../models/user.models.js";
+import Access from "./access.controllers.js";
+import Form from "./form.controllers.js";
 
 export default class Modal {
   static createModalTemplate(modalH2 = "placeholder - título") {
@@ -48,8 +51,14 @@ export default class Modal {
     saveChangesBtn.classList.add("mainButton", "mainButton--saveChanges");
 
     nameLabel.innerText = "Nome";
+    nameInput.type = "text";
+    nameInput.name = "name";
+    nameInput.setAttribute("required", "true")
     nameInput.value = userData.usr_name;
     urlImageLabel.innerText = "URL da imagem do perfil";
+    urlImageInput.type = "url";
+    urlImageInput.name = "urlImage";
+    urlImageInput.setAttribute("required", "true");
     urlImageInput.value = userData.usr_image;
     saveChangesBtn.innerText = "Salvar alterações";
 
@@ -58,15 +67,22 @@ export default class Modal {
     modalForm.append(nameDiv, urlImageDiv);
     modalDivButtons.append(saveChangesBtn);
 
-    saveChangesBtn.onclick = () => {
-      User.editUserData({
-        usr_name: nameInput.value,
-        usr_image: urlImageInput.value
-      })
-      .then((res) => {
-        window.location.reload()
-      })
-      .catch((err) => console.error(err))
+    saveChangesBtn.onclick = (e) => {
+      e.preventDefault()
+      const formData = Form.isFormValid(e)
+      
+      if(typeof formData == "object") {
+        User.editUserData({
+          usr_name: formData.name,
+          usr_image: formData.urlImage
+        })
+        .then((res) => {
+          Access.redirectToHomePage()
+        })
+        .catch((err) => console.error(err))
+      } else {
+        Form.alertFieldInvalid(formData)
+      }
     }
   }
 
@@ -97,6 +113,17 @@ export default class Modal {
     descriptionDiv.classList.add("form__inputContainer");
     categoryDiv.classList.add("form__inputContainer");
     insertBtn.classList.add("mainButton", "mainButton--insert");
+
+    titleInput.type = "text"
+    titleInput.name = "title"
+    titleInput.id = "title"
+    titleInput.setAttribute("required", "true")
+    descriptionTextarea.name = "description"
+    descriptionTextarea.id = "description"
+    descriptionTextarea.setAttribute("required", "true")
+    categorySelect.name = "category"
+    categorySelect.id = "category"
+    categorySelect.setAttribute("required", "true")
 
     titleLabel.innerText = "Título";
     titleInput.placeholder = "Digitar título";
@@ -133,8 +160,28 @@ export default class Modal {
     descriptionDiv.append(descriptionLabel, descriptionTextarea);
     categoryDiv.append(categoryLabel, categorySelect);
 
-    modalForm.append(titleDiv, descriptionDiv, categoryDiv)
     modalDivButtons.append(insertBtn)
+    modalForm.append(titleDiv, descriptionDiv, categoryDiv, modalDivButtons)
+
+    insertBtn.onclick = (e) => {
+      e.preventDefault()
+      const formData = Form.isFormValid(e)
+      console.log(formData)
+
+      if (typeof formData == "object") {
+        Habits.createNewHabit({
+          habit_title: formData.title,
+          habit_description: formData.description,
+          habit_category: formData.category
+        })
+        .then((res) => {
+          Access.redirectToHomePage()
+        })
+        .catch((err) => console.error(err))
+      } else {
+        Form.alertFieldInvalid(formData)
+      }
+    }
   }
 
   static showEditHabitModal() {
@@ -224,3 +271,5 @@ export default class Modal {
     divTitle.append(title, titleDescription);
   }
 }
+
+// Modal.showNewHabitModal()

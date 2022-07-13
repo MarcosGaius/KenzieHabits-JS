@@ -7,13 +7,9 @@ export default class User {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${JSON.parse(
-          localStorage.getItem("@kenziehabits:token")
-        )}`,
+        Authorization: `Bearer ${localStorage.getItem("@kenziehabits:token")}`,
       },
-      body: JSON.stringify({
-        usr_img: editObj,
-      }),
+      body: JSON.stringify(editObj),
     })
     .then(async (res) => {
       if(!res.ok){ throw ({status: res.status, statusText: res.statusText, message: res.message});}
