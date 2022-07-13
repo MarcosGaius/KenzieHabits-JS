@@ -143,12 +143,16 @@ export default class Modal {
     const optionTwo = document.createElement("option");
     const optionThree = document.createElement("option");
     const optionFour = document.createElement("option");
+    const optionFive = document.createElement("option");
 
     const divStatus = document.createElement("div");
     const divTitle = document.createElement("div");
     const divDescription = document.createElement("div");
     const divCategory = document.createElement("div");
 
+    inputTitle.classList.add("input_title");
+    inputDescription.classList.add("input_descryption");
+    inputCategory.classList.add("input_category");
     divTitle.classList.add("form__inputContainer");
     divDescription.classList.add("form__inputContainer");
     divCategory.classList.add("form__inputContainer");
@@ -170,6 +174,7 @@ export default class Modal {
     optionTwo.innerText = "Trabalho";
     optionThree.innerText = "Lazer";
     optionFour.innerText = "Casa";
+    optionFive.innerText = "Estudo";
 
     const modalForm = document.querySelector(".modal__form");
     const modalButtons = document.querySelector(".modal__buttons");
