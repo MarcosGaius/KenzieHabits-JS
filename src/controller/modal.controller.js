@@ -123,7 +123,7 @@ export default class Modal {
     modalForm.append(titleDiv, descriptionDiv, categoryDiv)
     modalDivButtons.append(insertBtn)
   }
-}
+
   static showEditHabitModal() {
     Modal.createModalTemplate("Editar hábito");
 
