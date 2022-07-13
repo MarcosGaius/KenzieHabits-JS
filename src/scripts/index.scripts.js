@@ -13,6 +13,10 @@ import Notification from "../controller/notification.controller.js";
                 Notification.showNotification(tokenExpiredNot);
                 return;
             }
+            else {
+                Access.redirectToHomePage();
+                return;
+            }
         }
     }
 )();
