@@ -1,7 +1,9 @@
 import Form from "../controller/form.controllers.js";
 import Access from "../controller/access.controllers.js";
+import User from "../models/user.models.js"
+import Notification from "../controller/notification.controller.js";
 
-document.getElementById("loginFormButton").onclick = (e) => {
+document.getElementById("loginFormButton").onclick = async (e) => {
     e.preventDefault();
 
     const formData = Form.isFormValid(e);
@@ -12,9 +14,20 @@ document.getElementById("loginFormButton").onclick = (e) => {
     }
 
     try {
-
+        const loginResponse = await User.logUserIn(formData.email, formData.password);
+        if(loginResponse.status){
+            throw loginResponse.message;
+        }
+        else {
+            const loginNotification = Notification.createNotification("Login bem sucedido!", true);
+            Notification.showNotification(loginNotification);
+            setTimeout(()=> {
+                Access.redirectToHomePage();
+            }, 1000)
+        }
     }
-    catch(error){
-
+    catch(error){ 
+        const errorNotification = Notification.createNotification(error, false);
+        Notification.showNotification(errorNotification);
     }
 }
