@@ -1,4 +1,5 @@
 import Notification from "./notification.controller.js";
+import Access from "./access.controllers.js";
 import User from "../models/user.models.js";
 
 export default class Login {
@@ -14,7 +15,7 @@ export default class Login {
     const formElements = Array.from(e.target.elements);
     const data = {};
     
-    for(let i=0; i<formElements.length; i++){
+    for(let i = 0; i < formElements.length; i++){
       const currentElement = formElements[i];
       
       if(currentElement.name !== ""){
@@ -32,10 +33,17 @@ export default class Login {
 
     try {
       const loginResponse = await User.logUserIn(data.email, data.password);
-      console.log(loginResponse)
+
+      if(typeof loginResponse.message === "undefined") {
+        Access.redirectToHomePag()
+      }
+
+      const unauthorizedLogin = Notification.createNotification(loginResponse.message, false);
+      Notification.showNotification(unauthorizedLogin);
+
     }
     catch(error){
-      console.log(error);
+      console.error(error);
     }
   }
 

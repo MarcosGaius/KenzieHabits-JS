@@ -1,6 +1,5 @@
 export default class User {
   static baseUrl = "https://habits-kenzie.herokuapp.com/api";
-
   static async editUserData(editObj) {
     return await fetch(`${this.baseUrl}/user/profile`, {
       method: "PATCH",
@@ -46,7 +45,7 @@ export default class User {
         localStorage.setItem("@kenziehabits:token", res.token);
 
         //falta método de redirecionamento
-        
+        console.log(res)
         return res;
       })
       .catch((err) => {
@@ -58,10 +57,3 @@ export default class User {
   }
 
 }
-
-// User.logUserIn(
-//   "grupo5RafaelK@mail.com",
-//   "aaa6cd662711478489f51cd12036a71a"
-// ).then((res) => console.log(res));
-
-// User.logUserOut()
