@@ -64,6 +64,6 @@
     width: 100%;
 }
 
-.mainButton--insert {
+.mainButton--insert, .mainButton--saveChanges {
     width: 100%;
 }
