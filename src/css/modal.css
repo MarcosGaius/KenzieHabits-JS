@@ -18,6 +18,9 @@
     border-radius: 8px;
     width: 31rem;
     padding: 2rem;
+
+    position: fixed;
+    z-index: 1;
 }
 
 .modal__header {
