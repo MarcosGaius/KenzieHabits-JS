@@ -33,6 +33,7 @@ export default class Login {
 
     try {
       const loginResponse = await User.logUserIn(data.email, data.password);
+      console.log(loginResponse) //receber os status e response, fazer q nem no meu blog
 
       if(typeof loginResponse.message === "undefined") {
         Access.redirectToHomePag()
@@ -40,8 +41,8 @@ export default class Login {
 
       const unauthorizedLogin = Notification.createNotification(loginResponse.message, false);
       Notification.showNotification(unauthorizedLogin);
-
     }
+    
     catch(error){
       console.error(error);
     }
