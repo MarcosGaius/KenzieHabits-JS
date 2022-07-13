@@ -32,7 +32,7 @@ export default class Login {
 
     try {
       const loginResponse = await User.logUserIn(data.email, data.password);
-      console.log(loginResponse)
+      console.log(loginResponse) //receber os status e response, fazer q nem no meu blog
     }
     catch(error){
       console.log(error);
