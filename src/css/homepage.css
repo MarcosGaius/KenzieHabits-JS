@@ -32,10 +32,11 @@ nav.navHeader ul { list-style-type: none; }
 .imgPerfil {
   width: 40px;
   height: 40px;
-  background-image: url("/src/assets/img/user_example.png");
   border-radius: 50%;
   border: 2px solid var(--main-blue);
   background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
   cursor: pointer;
 }
 
@@ -95,7 +96,6 @@ nav.navHeader ul { list-style-type: none; }
 .imgUserInfo {
   width: 60px;
   height: 60px;
-  background-image: url("/src/assets/img/user_example.png");
   background-size: cover;
   background-position: center;
   border-radius: 50%;
@@ -170,8 +170,15 @@ nav.navHeader ul { list-style-type: none; }
   flex-direction: column;
   list-style-type: none;
   width: 100%;
-  margin-top: 20px;
+  margin: 20px 0;
   border-radius: 4px;
+}
+
+.noHabits {
+  text-align: center;
+  padding: 20px 0;
+  font-size: 30px;
+  color: #ADB5BD;
 }
 
 .listHabits li {
