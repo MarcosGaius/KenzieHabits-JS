@@ -24,7 +24,12 @@ export default class Modal {
     modalTitle.innerText = `${modalH2}`;
     modalCloseBtn.innerText = "X";
 
-    modalCloseBtn.onclick = () => modalWrapper.remove();
+    modalCloseBtn.onclick = () => {
+      modal.classList.add("modal--hide-modal");
+      setTimeout(() => {
+        modalWrapper.remove();
+      },200)
+    };
 
     modalHeader.append(modalTitle, modalCloseBtn);
     modal.append(modalHeader, modalForm, modalDivButtons);
@@ -289,13 +294,7 @@ export default class Modal {
 
       Modal.showDeleteHabitModal(id);
     };
-
-    const closeModal__btn = document.querySelector(".closeModal__btn");
-      closeModal__btn.onclick = () => {
-      const modal = document.querySelector(".modalWrapper");
-      modal.remove();
-    };
-
+    
     saveHabit.onclick = async (e) => {
       e.preventDefault();
 
