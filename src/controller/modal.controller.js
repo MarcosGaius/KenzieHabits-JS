@@ -270,4 +270,16 @@ export default class Modal {
     modalButtons.append(cancelDeletion, confirmDeletion);
     divTitle.append(title, titleDescription);
   }
+
+  static showLoading(){
+    const loadingContainer = document.querySelector(".loadingContainer");
+    loadingContainer.style = "display: flex;"
+    return;
+  }
+
+  static hideLoading(){
+    const loadingContainer = document.querySelector(".loadingContainer");
+    loadingContainer.style = "display: none;"
+    return;
+  }
 }
