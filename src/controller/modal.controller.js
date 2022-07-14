@@ -178,8 +178,13 @@ export default class Modal {
           habit_category: formData.category
         })
         .then((res) => {
-          Access.redirectToHomePage()
-          Modal.hideLoading();
+          const habitSucess = Notification.createNotification("Hábito criado com sucesso", true);
+          Notification.showNotification(habitSucess);
+          setTimeout(() => {
+            Access.redirectToHomePage()
+            Modal.hideLoading();
+          }, 1700)
+          
         })
         .catch((err) => console.error(err))
       } else {
