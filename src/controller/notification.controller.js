@@ -1,53 +1,41 @@
 export default class Notification {
     static createNotification(message, successful = true){
         const notificationWrapper = document.createElement("div");
-        notificationWrapper.classList.add("notificationWrapper");
+        notificationWrapper.classList.add("notificationCard");
 
-        const notificationCard = document.createElement("div");
-        notificationCard.classList.add("notificationCard");
-        (successful === false) ? notificationCard.classList.add("notificationCard--error") : notificationCard;
+        const notificationInner = document.createElement("div");
+        notificationInner.classList.add("notificationCard__inner", "boxShadow--strong");
 
-        const notificationImage = document.createElement("div");
-        notificationImage.classList.add("notificationImage");
-        (successful === false) ? notificationImage.classList.add("notificationImage--error") : notificationImage;
+        const notificationDetail = document.createElement("div");
+        notificationDetail.classList.add("notification__detail");
+        (successful) ? notificationDetail.classList.add("notificationSuccess") : notificationDetail.classList.add("notificationError");
 
-        const img = document.createElement("img");
-        if(successful === false){
-            img.src = "/src/assets/img/cross.png"; 
-            img.alt = "Símbolo de check.";
-        }
-        else {
-            img.src = "/src/assets/img/check.png";
-            img.alt = "Símbolo de check.";
-        }
+        const notificationTextWrapper = document.createElement("div");
+        notificationTextWrapper.classList.add("notificationCard__text");
 
-        const notificationText = document.createElement("div");
-        notificationText.classList.add("notificationText");
+        const notificationLabel = document.createElement("p");
+        notificationLabel.classList.add("notificationLabel");
+        (successful) ? notificationLabel.innerText = "Sucesso!" : notificationLabel.innerText = "Erro!" ;
 
-        const notificationTitle = document.createElement("h2");
-        notificationTitle.classList.add("notificationText__title");
-        (successful === false) ? notificationTitle.innerText = "Erro!" : notificationTitle.innerText = "Sucesso!";
+        const notificationContent = document.createElement("p");
+        notificationContent.classList.add("notificationContent");
+        notificationContent.innerText = message;
 
-        const notificationSubtitle = document.createElement("p");
-        notificationSubtitle.classList.add("notificationText__subtitle");
-        notificationSubtitle.innerText = message;
+        notificationTextWrapper.append(notificationLabel, notificationContent);
+        notificationInner.append(notificationDetail, notificationTextWrapper);
 
-        notificationText.append(notificationTitle, notificationSubtitle);
-        notificationImage.appendChild(img);
-        notificationCard.append(notificationImage, notificationText);
-        notificationWrapper.appendChild(notificationCard);
-
+        notificationWrapper.appendChild(notificationInner);
         return notificationWrapper;
     }
 
     static async showNotification(notification){
-        const notificationExists = document.querySelector(".notificationWrapper");
+        const notificationExists = document.querySelector(".notificationCard");
         if(notificationExists){ notificationExists.remove() }
 
         const newNotification = document.querySelector("body").insertAdjacentElement("afterbegin", notification);
         
         setTimeout(() => {
             newNotification.remove();
-        }, 5000);
+        }, 500000);
     }
 }
