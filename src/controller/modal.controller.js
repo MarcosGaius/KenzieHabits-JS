@@ -183,7 +183,7 @@ export default class Modal {
           setTimeout(() => {
             Access.redirectToHomePage()
             Modal.hideLoading();
-          }, 1700)
+          }, 1700);
           
         })
         .catch((err) => console.error(err))
