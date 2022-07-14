@@ -37,6 +37,7 @@ export default class Habits {
       body: JSON.stringify(updateObj),
     })
       .then(async (res) => {
+        console.log(res)
         if (!res.ok) {
           throw {
             status: res.status,
@@ -140,4 +141,5 @@ export default class Habits {
         return err;
       });
   }
+
 }

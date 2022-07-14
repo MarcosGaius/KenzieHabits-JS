@@ -1,4 +1,6 @@
 import Habits from "../models/habit.models.js";
+import User from "../models/user.models.js";
+import Modal from "./modal.controller.js";
 
 export default class HomePage {
   static dataUser = JSON.parse(localStorage.getItem("@kenziehabits:userdata"));
@@ -16,7 +18,7 @@ export default class HomePage {
   }
 
   static addHomeEvents() {
-    document.querySelector(".imgPerfil").addEventListener("click", e => {
+    document.querySelector(".imgPerfil").addEventListener("click", () => {
       const hasDropMenu = document.querySelector(".dropMenuHeader");
       if (!!hasDropMenu) {
         hasDropMenu.parentNode.removeChild(hasDropMenu);
@@ -24,6 +26,24 @@ export default class HomePage {
       }
       this.dropMenuHeader()
     });
+
+    document.querySelector(".createHabitButton").addEventListener("click", () => Modal.showNewHabitModal());
+
+    document.querySelector(".allButton").addEventListener("click", () => {
+      HomePage.addItemsToList();
+    });
+
+    document.querySelector(".doneButton").addEventListener("click", async () => {
+      const arrayHabits = await Habits.getAllHabits();
+      const filterHabits = arrayHabits.filter(({ habit_status }) => habit_status === true);
+      const listHabits = document.querySelector(".listHabits");
+
+      listHabits.textContent = "";
+
+      HomePage.createItemHeader(listHabits);
+      HomePage.createItemsHabits(listHabits, filterHabits);
+
+    })
   }
 
   static async addItemsToList() {
@@ -34,7 +54,6 @@ export default class HomePage {
 
     this.createItemHeader(listHabits);
     this.createItemsHabits(listHabits, arrayHabits);
-
   }
 
   static createItemHeader(listHabits) {
@@ -86,9 +105,25 @@ export default class HomePage {
 
       inputStatus.type = "checkbox";
       inputStatus.name = "checkbox";
+      inputStatus.id = habit_id
       inputStatus.id = habit_id;
       if (habit_status === true) inputStatus.checked = habit_status
       label.htmlFor = habit_id;
+      spanEdit.id = habit_id;
+
+      spanEdit.addEventListener("click", e => {
+        const { id } = e.target;
+        Modal.showEditHabitModal(id)
+      })
+
+      inputStatus.addEventListener("change", e => {
+        const { id, checked } = e.target;
+        console.log(id)
+        if(checked) {
+          Habits.setHabitDone(id);
+          return
+        };
+      })
 
       paragraphTitle.textContent = habit_title;
       paragraphDescription.textContent = habit_description;
@@ -121,6 +156,9 @@ export default class HomePage {
 
     spanUser.textContent = "Editar Perfil";
     spanLogoutUser.textContent = "Sair do app";
+
+    liEditUser.addEventListener("click", Modal.showUserEditModal);
+    liLogoutUser.addEventListener("click", User.logUserOut);
 
     liEditUser.append(iconUser, spanUser);
     liLogoutUser.append(iconLogoutUser, spanLogoutUser);

@@ -24,6 +24,8 @@ export default class Modal {
     modalTitle.innerText = `${modalH2}`;
     modalCloseBtn.innerText = "X";
 
+    modalCloseBtn.onclick = () => modalWrapper.remove();
+
     modalHeader.append(modalTitle, modalCloseBtn);
     modal.append(modalHeader, modalForm, modalDivButtons);
     modalWrapper.append(modal);
@@ -37,7 +39,6 @@ export default class Modal {
     const userData = JSON.parse(localStorage.getItem("@kenziehabits:userdata"));
 
     const modalForm = document.querySelector(".modal__form");
-    const modalDivButtons = document.querySelector(".modal__buttons");
 
     const nameDiv = document.createElement("div");
     const nameLabel = document.createElement("label");
@@ -46,6 +47,25 @@ export default class Modal {
     const urlImageLabel = document.createElement("label");
     const urlImageInput = document.createElement("input");
     const saveChangesBtn = document.createElement("button");
+
+    saveChangesBtn.addEventListener("click", (e) => {
+      e.preventDefault()
+      const formData = Form.isFormValid(e);
+      console.log("🚀 ~ file: modal.controller.js ~ line 76 ~ Modal ~ showUserEditModal ~ formData", formData)
+      
+      if(typeof formData === "object") {
+        User.editUserData({
+          usr_name: formData.name,
+          usr_image: formData.urlImage
+        })
+        .then((res) => {
+          Access.redirectToHomePage()
+        })
+        .catch((err) => console.error(err))
+      } else {
+        Form.alertFieldInvalid(formData)
+      }
+    });
 
     nameDiv.classList.add("form__inputContainer");
     urlImageDiv.classList.add("form__inputContainer");
@@ -65,26 +85,7 @@ export default class Modal {
 
     nameDiv.append(nameLabel, nameInput);
     urlImageDiv.append(urlImageLabel, urlImageInput);
-    modalDivButtons.append(saveChangesBtn);
-    modalForm.append(nameDiv, urlImageDiv, modalDivButtons);
-
-    saveChangesBtn.onclick = (e) => {
-      e.preventDefault()
-      const formData = Form.isFormValid(e)
-      
-      if(typeof formData == "object") {
-        User.editUserData({
-          usr_name: formData.name,
-          usr_image: formData.urlImage
-        })
-        .then((res) => {
-          Access.redirectToHomePage()
-        })
-        .catch((err) => console.error(err))
-      } else {
-        Form.alertFieldInvalid(formData)
-      }
-    }
+    modalForm.append(nameDiv, urlImageDiv, saveChangesBtn);
   }
 
   static showNewHabitModal() {
@@ -185,108 +186,12 @@ export default class Modal {
     }
   }
 
-  static showUserEditModal() {
-    Modal.createModalTemplate("Editar perfil");
+  
+  static async showEditHabitModal(id) {
+    const allHabits = await Habits.getAllHabits()
+    const { habit_title, habit_description, habit_category } = allHabits.find(( { habit_id } ) => habit_id === Number(id));
 
-    const userData = JSON.parse(localStorage.getItem("@kenziehabits:userdata"));
-
-    const modalForm = document.querySelector(".modal__form");
-    const modalDivButtons = document.querySelector(".modal__buttons");
-
-    const nameDiv = document.createElement("div");
-    const nameLabel = document.createElement("label");
-    const nameInput = document.createElement("input");
-    const urlImageDiv = document.createElement("div");
-    const urlImageLabel = document.createElement("label");
-    const urlImageInput = document.createElement("input");
-    const saveChangesBtn = document.createElement("button");
-
-    nameDiv.classList.add("form__inputContainer");
-    urlImageDiv.classList.add("form__inputContainer");
-    saveChangesBtn.classList.add("mainButton", "mainButton--saveChanges");
-
-    nameLabel.innerText = "Nome";
-    nameInput.value = userData.usr_name;
-    urlImageLabel.innerText = "URL da imagem do perfil";
-    urlImageInput.value = userData.usr_image;
-    saveChangesBtn.innerText = "Salvar alterações";
-
-    nameDiv.append(nameLabel, nameInput);
-    urlImageDiv.append(urlImageLabel, urlImageInput);
-    modalForm.append(nameDiv, urlImageDiv);
-    modalDivButtons.append(saveChangesBtn);
-  }
-
-  static showNewHabitModal() {
-    Modal.createModalTemplate("Criar hábito");
-
-    const modalForm = document.querySelector(".modal__form");
-    const modalDivButtons = document.querySelector(".modal__buttons");
-
-    const titleDiv = document.createElement("div");
-    const titleLabel = document.createElement("label");
-    const titleInput = document.createElement("input");
-    const descriptionDiv = document.createElement("div");
-    const descriptionLabel = document.createElement("label");
-    const descriptionTextarea = document.createElement("textarea");
-    const categoryDiv = document.createElement("div");
-    const categoryLabel = document.createElement("label");
-    const categorySelect = document.createElement("select");
-    const saudeOption = document.createElement("option");
-    const estudosOption = document.createElement("option");
-    const casaOption = document.createElement("option");
-    const trabalhoOption = document.createElement("option");
-    const lazerOption = document.createElement("option");
-    const placeholderOption = document.createElement("option");
-    const insertBtn = document.createElement("button");
-
-    titleDiv.classList.add("form__inputContainer");
-    descriptionDiv.classList.add("form__inputContainer");
-    categoryDiv.classList.add("form__inputContainer");
-    insertBtn.classList.add("mainButton", "mainButton--insert");
-
-    titleLabel.innerText = "Título";
-    titleInput.placeholder = "Digitar título";
-    descriptionLabel.innerText = "Descrição";
-    descriptionTextarea.placeholder = "Digitar descrição";
-    categoryLabel.innerText = "Categoria";
-    placeholderOption.value = "";
-    placeholderOption.setAttribute("selected", "true");
-    placeholderOption.setAttribute("hidden", "true");
-    placeholderOption.setAttribute("disabled", "true");
-    placeholderOption.innerText = "Selecionar categoria";
-    saudeOption.value = "saude";
-    saudeOption.innerText = "Saúde";
-    estudosOption.value = "estudos";
-    estudosOption.innerText = "Estudos";
-    trabalhoOption.value = "trabalho";
-    trabalhoOption.innerText = "Trabalho";
-    casaOption.value = "casa";
-    casaOption.innerText = "Casa";
-    lazerOption.value = "lazer";
-    lazerOption.innerText = "Lazer";
-    insertBtn.innerText = "Inserir";
-
-    categorySelect.append(
-      placeholderOption,
-      saudeOption,
-      estudosOption,
-      trabalhoOption,
-      casaOption,
-      lazerOption
-    );
-
-    titleDiv.append(titleLabel, titleInput);
-    descriptionDiv.append(descriptionLabel, descriptionTextarea);
-    categoryDiv.append(categoryLabel, categorySelect);
-
-    modalForm.append(titleDiv, descriptionDiv, categoryDiv);
-    modalDivButtons.append(insertBtn);
-  }
-
-  static showEditHabitModal(id) {
     Modal.createModalTemplate("Editar hábito");
-
     const smallTitle = document.createElement("label");
     const inputTitle = document.createElement("input");
     const smallDescription = document.createElement("label");
@@ -321,6 +226,8 @@ export default class Modal {
     deleteHabit.className = "deleteHabit mainButton";
     saveHabit.className = "saveHabit mainButton";
 
+    inputTitle.value = habit_title;
+    inputDescription.value = habit_description;
     smallTitle.innerText = "Título";
     inputTitle.placeholder = "Insira o título aqui";
     smallDescription.innerText = "Descrição";
@@ -336,10 +243,15 @@ export default class Modal {
     inputCategory.name = "category";
 
     optionOne.innerText = "Saúde";
+    optionOne.value = "saude";
     optionTwo.innerText = "Trabalho";
+    optionTwo.value = "trabalho";
     optionThree.innerText = "Lazer";
+    optionThree.value = "lazer"
     optionFour.innerText = "Casa";
+    optionFour.value = "casa";
     optionFive.innerText = "Estudo";
+    optionFive.value = "estudo";
 
     const modalForm = document.querySelector(".modal__form");
     const modalButtons = document.querySelector(".modal__buttons");
@@ -351,7 +263,10 @@ export default class Modal {
       divStatus,
       modalButtons
     );
-    inputCategory.append(optionOne, optionTwo, optionThree, optionFour);
+    inputCategory.append(optionOne, optionTwo, optionThree, optionFour, optionFive);
+
+    inputCategory.value = habit_category.toLowerCase();
+
     divStatus.append(status, inputCheck);
     divTitle.append(smallTitle, inputTitle);
     divDescription.append(smallDescription, inputDescription);
@@ -362,7 +277,7 @@ export default class Modal {
       const modal = document.querySelector(".modalWrapper");
       modal.remove();
 
-      Modal.showDeleteHabitModal();
+      Modal.showDeleteHabitModal(id);
     };
 
     const closeModal__btn = document.querySelector(".closeModal__btn");
