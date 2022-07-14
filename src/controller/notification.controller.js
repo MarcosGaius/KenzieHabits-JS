@@ -46,6 +46,6 @@ export default class Notification {
 
     setTimeout(() => {
       newNotification.remove();
-    }, 500000);
+    }, 5000);
   }
 }
