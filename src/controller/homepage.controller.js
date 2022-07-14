@@ -1,9 +1,17 @@
 import Habits from "../models/habit.models.js";
 import User from "../models/user.models.js";
 import Modal from "./modal.controller.js";
+import Access from "./access.controllers.js"
 
 export default class HomePage {
   static dataUser = JSON.parse(localStorage.getItem("@kenziehabits:userdata"));
+  static token = localStorage.getItem("@kenziehabits:token");
+
+  static checkingData() {
+    if (this.dataUser === null || this.token === null) {
+      Access.redirectToLoginPage();
+    }
+  }
 
   static addDom() {
     const imgPerfil = document.querySelector(".imgPerfil");
@@ -107,7 +115,10 @@ export default class HomePage {
       inputStatus.name = "checkbox";
       inputStatus.id = habit_id
       inputStatus.id = habit_id;
-      if (habit_status === true) inputStatus.checked = habit_status
+      if (habit_status === true) {
+        inputStatus.checked = habit_status
+        inputStatus.disabled = true;
+      }
       label.htmlFor = habit_id;
       spanEdit.id = habit_id;
 
@@ -118,11 +129,14 @@ export default class HomePage {
 
       inputStatus.addEventListener("change", e => {
         const { id, checked } = e.target;
-        console.log(id)
+
         if(checked) {
           Habits.setHabitDone(id);
           return
         };
+
+        e.target.checked = true;
+        e.target.disabled = true;
       })
 
       paragraphTitle.textContent = habit_title;
