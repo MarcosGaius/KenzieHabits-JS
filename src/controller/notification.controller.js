@@ -2,7 +2,6 @@ export default class Notification {
   static createNotification(message, successful = true) {
     const notificationWrapper = document.createElement("div");
     notificationWrapper.classList.add("notificationCard");
-
     const notificationInner = document.createElement("div");
     notificationInner.classList.add(
       "notificationCard__inner",

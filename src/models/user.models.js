@@ -24,10 +24,8 @@ export default class User {
 
         localStorage.setItem(
           "@kenziehabits:userdata",
-          JSON.stringify(res.response)
+          JSON.stringify(res)
         );
-        localStorage.setItem("@kenziehabits:token", res.token);
-
         return res;
       })
       .catch((err) => {
@@ -36,8 +34,7 @@ export default class User {
   }
 
   static logUserOut() {
-    localStorage.removeItem("@kenziehabits:userdata");
-    localStorage.removeItem("@kenziehabits:token");
+    localStorage.clear();
     Access.redirectToLoginPage();
   }
 
