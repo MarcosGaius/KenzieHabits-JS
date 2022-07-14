@@ -90,6 +90,7 @@ export default class HomePage {
       const titleNoHabits = document.createElement("h1");
       titleNoHabits.classList.add("noHabits");
       titleNoHabits.textContent = "Você não possui habitos cadastrados";
+      listHabits.append(titleNoHabits);
       return
     }
 
