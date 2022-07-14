@@ -1,4 +1,5 @@
 export default class Access {
+
   static homeUrl = "/src/views/homepage.views.html";
   static loginUrl = "/index.html";
 

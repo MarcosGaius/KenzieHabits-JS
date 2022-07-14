@@ -4,7 +4,6 @@ export default class Form {
   static isFormValid(e) {
     const formElements = Array.from(e.target.form.elements);
     const data = {};
-
     for (let i = 0; i < formElements.length; i++) {
       const currentElement = formElements[i];
 

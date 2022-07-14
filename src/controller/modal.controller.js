@@ -2,6 +2,8 @@ import Habits from "../models/habit.models.js";
 import Form from "./form.controllers.js";
 import Access from "./access.controllers.js";
 import Notification from "./notification.controller.js";
+import User from "../models/user.models.js";
+
 export default class Modal {
   static createModalTemplate(modalH2 = "placeholder - título") {
     const body = document.querySelector("body");
@@ -27,6 +29,160 @@ export default class Modal {
     modalWrapper.append(modal);
 
     body.append(modalWrapper);
+  }
+  
+  static showUserEditModal() {
+    Modal.createModalTemplate("Editar perfil");
+
+    const userData = JSON.parse(localStorage.getItem("@kenziehabits:userdata"));
+
+    const modalForm = document.querySelector(".modal__form");
+    const modalDivButtons = document.querySelector(".modal__buttons");
+
+    const nameDiv = document.createElement("div");
+    const nameLabel = document.createElement("label");
+    const nameInput = document.createElement("input");
+    const urlImageDiv = document.createElement("div");
+    const urlImageLabel = document.createElement("label");
+    const urlImageInput = document.createElement("input");
+    const saveChangesBtn = document.createElement("button");
+
+    nameDiv.classList.add("form__inputContainer");
+    urlImageDiv.classList.add("form__inputContainer");
+    saveChangesBtn.classList.add("mainButton", "mainButton--saveChanges");
+
+    nameLabel.innerText = "Nome";
+    nameInput.type = "text";
+    nameInput.name = "name";
+    nameInput.setAttribute("required", "true")
+    nameInput.value = userData.usr_name;
+    urlImageLabel.innerText = "URL da imagem do perfil";
+    urlImageInput.type = "url";
+    urlImageInput.name = "urlImage";
+    urlImageInput.setAttribute("required", "true");
+    urlImageInput.value = userData.usr_image;
+    saveChangesBtn.innerText = "Salvar alterações";
+
+    nameDiv.append(nameLabel, nameInput);
+    urlImageDiv.append(urlImageLabel, urlImageInput);
+    modalDivButtons.append(saveChangesBtn);
+    modalForm.append(nameDiv, urlImageDiv, modalDivButtons);
+
+    saveChangesBtn.onclick = (e) => {
+      e.preventDefault()
+      const formData = Form.isFormValid(e)
+      
+      if(typeof formData == "object") {
+        User.editUserData({
+          usr_name: formData.name,
+          usr_image: formData.urlImage
+        })
+        .then((res) => {
+          Access.redirectToHomePage()
+        })
+        .catch((err) => console.error(err))
+      } else {
+        Form.alertFieldInvalid(formData)
+      }
+    }
+  }
+
+  static showNewHabitModal() {
+    Modal.createModalTemplate("Criar hábito");
+
+    const modalForm = document.querySelector(".modal__form");
+    const modalDivButtons = document.querySelector(".modal__buttons");
+
+    const titleDiv = document.createElement("div");
+    const titleLabel = document.createElement("label");
+    const titleInput = document.createElement("input");
+    const descriptionDiv = document.createElement("div");
+    const descriptionLabel = document.createElement("label");
+    const descriptionTextarea = document.createElement("textarea");
+    const categoryDiv = document.createElement("div");
+    const categoryLabel = document.createElement("label");
+    const categorySelect = document.createElement("select");
+    const saudeOption = document.createElement("option");
+    const estudosOption = document.createElement("option");
+    const casaOption = document.createElement("option");
+    const trabalhoOption = document.createElement("option");
+    const lazerOption = document.createElement("option");
+    const placeholderOption = document.createElement("option");
+    const insertBtn = document.createElement("button");
+
+    titleDiv.classList.add("form__inputContainer");
+    descriptionDiv.classList.add("form__inputContainer");
+    categoryDiv.classList.add("form__inputContainer");
+    insertBtn.classList.add("mainButton", "mainButton--insert");
+
+    titleInput.type = "text"
+    titleInput.name = "title"
+    titleInput.id = "title"
+    titleInput.setAttribute("required", "true")
+    descriptionTextarea.name = "description"
+    descriptionTextarea.id = "description"
+    descriptionTextarea.setAttribute("required", "true")
+    categorySelect.name = "category"
+    categorySelect.id = "category"
+    categorySelect.setAttribute("required", "true")
+
+    titleLabel.innerText = "Título";
+    titleInput.placeholder = "Digitar título";
+    descriptionLabel.innerText = "Descrição";
+    descriptionTextarea.placeholder = "Digitar descrição";
+    categoryLabel.innerText = "Categoria";
+    placeholderOption.value = "";
+    placeholderOption.setAttribute("selected", "true");
+    placeholderOption.setAttribute("hidden", "true");
+    placeholderOption.setAttribute("disabled", "true");
+    placeholderOption.innerText = "Selecionar categoria"
+    saudeOption.value = "saude";
+    saudeOption.innerText = "Saúde";
+    estudosOption.value = "estudos";
+    estudosOption.innerText = "Estudos";
+    trabalhoOption.value = "trabalho";
+    trabalhoOption.innerText = "Trabalho";
+    casaOption.value = "casa";
+    casaOption.innerText = "Casa";
+    lazerOption.value = "lazer";
+    lazerOption.innerText = "Lazer";
+    insertBtn.innerText = "Inserir"
+
+    categorySelect.append(
+      placeholderOption,
+      saudeOption,
+      estudosOption,
+      trabalhoOption,
+      casaOption,
+      lazerOption
+    );
+
+    titleDiv.append(titleLabel, titleInput);
+    descriptionDiv.append(descriptionLabel, descriptionTextarea);
+    categoryDiv.append(categoryLabel, categorySelect);
+
+    modalDivButtons.append(insertBtn)
+    modalForm.append(titleDiv, descriptionDiv, categoryDiv, modalDivButtons)
+
+    insertBtn.onclick = (e) => {
+      e.preventDefault()
+      const formData = Form.isFormValid(e)
+      console.log(formData)
+
+      if (typeof formData == "object") {
+        Habits.createNewHabit({
+          habit_title: formData.title,
+          habit_description: formData.description,
+          habit_category: formData.category
+        })
+        .then((res) => {
+          Access.redirectToHomePage()
+        })
+        .catch((err) => console.error(err))
+      } else {
+        Form.alertFieldInvalid(formData)
+      }
+    }
   }
 
   static showUserEditModal() {
@@ -303,7 +459,16 @@ export default class Modal {
       }, 2000);
     };
   }
-}
 
-const h1 = document.querySelector("h1");
-h1.onclick = Modal.showEditHabitModal;
+  static showLoading(){
+    const loadingContainer = document.querySelector(".loadingContainer");
+    loadingContainer.style = "display: flex;"
+    return;
+  }
+
+  static hideLoading(){
+    const loadingContainer = document.querySelector(".loadingContainer");
+    loadingContainer.style = "display: none;"
+    return;
+  }
+}
