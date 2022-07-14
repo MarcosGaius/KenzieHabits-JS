@@ -56,14 +56,15 @@ export default class Modal {
     saveChangesBtn.addEventListener("click", (e) => {
       e.preventDefault()
       const formData = Form.isFormValid(e);
-      console.log("🚀 ~ file: modal.controller.js ~ line 76 ~ Modal ~ showUserEditModal ~ formData", formData)
       
       if(typeof formData === "object") {
+        Modal.showLoading();
         User.editUserData({
           usr_name: formData.name,
           usr_image: formData.urlImage
         })
         .then((res) => {
+          Modal.hideLoading();
           Access.redirectToHomePage()
         })
         .catch((err) => console.error(err))
@@ -173,19 +174,26 @@ export default class Modal {
     insertBtn.onclick = (e) => {
       e.preventDefault()
       const formData = Form.isFormValid(e)
-      console.log(formData)
 
       if (typeof formData == "object") {
+        Modal.showLoading();
         Habits.createNewHabit({
           habit_title: formData.title,
           habit_description: formData.description,
           habit_category: formData.category
         })
         .then((res) => {
-          Access.redirectToHomePage()
+          const habitSucess = Notification.createNotification("Hábito criado com sucesso", true);
+          Notification.showNotification(habitSucess);
+          setTimeout(() => {
+            Access.redirectToHomePage()
+            Modal.hideLoading();
+          }, 1700)
+          
         })
         .catch((err) => console.error(err))
       } else {
+        Modal.hideLoading();
         Form.alertFieldInvalid(formData)
       }
     }
@@ -193,7 +201,9 @@ export default class Modal {
 
   
   static async showEditHabitModal(id) {
-    const allHabits = await Habits.getAllHabits()
+    Modal.showLoading();
+    const allHabits = await Habits.getAllHabits();
+    Modal.hideLoading();
     const { habit_title, habit_description, habit_category } = allHabits.find(( { habit_id } ) => habit_id === Number(id));
 
     Modal.createModalTemplate("Editar hábito");
@@ -284,7 +294,7 @@ export default class Modal {
 
       Modal.showDeleteHabitModal(id);
     };
-
+    
     saveHabit.onclick = async (e) => {
       e.preventDefault();
 
@@ -302,7 +312,10 @@ export default class Modal {
       };
 
       try {
+        Modal.showLoading();
         const updateResponse = await Habits.updateHabit(id, updateObj);
+        Modal.hideLoading();
+
         if (updateResponse.status) {
           throw updateResponse.message;
         } else {
@@ -361,7 +374,9 @@ export default class Modal {
 
     confirmDeletion.onclick = (e) => {
       e.preventDefault();
+      Modal.showLoading();
       Habits.deleteHabit(id);
+      Modal.hideLoading();
 
       const deleteNotification = Notification.createNotification(
         "Hábito deletado com sucesso!",

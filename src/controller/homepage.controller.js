@@ -1,9 +1,24 @@
 import Habits from "../models/habit.models.js";
 import User from "../models/user.models.js";
 import Modal from "./modal.controller.js";
+import Access from "./access.controllers.js"
 
 export default class HomePage {
   static dataUser = JSON.parse(localStorage.getItem("@kenziehabits:userdata"));
+  static token = localStorage.getItem("@kenziehabits:token");
+
+  static checkingData() {
+    if (this.dataUser === null || this.token === null) {
+      Access.redirectToLoginPage();
+    }
+    else if(Access.isTokenExpired(this.token)){
+      const tokenExpiredNot = Notification.createNotification("Sessão expirada, logue-se novamente.", false);
+      Notification.showNotification(tokenExpiredNot);
+      setTimeout(() => {
+        Access.redirectToLoginPage();
+      }, 1000)
+    }
+  }
 
   static addDom() {
     const imgPerfil = document.querySelector(".imgPerfil");
@@ -34,7 +49,9 @@ export default class HomePage {
     });
 
     document.querySelector(".doneButton").addEventListener("click", async () => {
+      Modal.showLoading();
       const arrayHabits = await Habits.getAllHabits();
+      Modal.hideLoading();
       const filterHabits = arrayHabits.filter(({ habit_status }) => habit_status === true);
       const listHabits = document.querySelector(".listHabits");
 
@@ -47,7 +64,9 @@ export default class HomePage {
   }
 
   static async addItemsToList() {
+    Modal.showLoading();
     const arrayHabits = await Habits.getAllHabits();
+    Modal.hideLoading();
     const listHabits = document.querySelector(".listHabits");
 
     listHabits.textContent = "";
@@ -82,6 +101,7 @@ export default class HomePage {
       const titleNoHabits = document.createElement("h1");
       titleNoHabits.classList.add("noHabits");
       titleNoHabits.textContent = "Você não possui habitos cadastrados";
+      listHabits.append(titleNoHabits);
       return
     }
 
@@ -107,7 +127,10 @@ export default class HomePage {
       inputStatus.name = "checkbox";
       inputStatus.id = habit_id
       inputStatus.id = habit_id;
-      if (habit_status === true) inputStatus.checked = habit_status
+      if (habit_status === true) {
+        inputStatus.checked = habit_status
+        inputStatus.disabled = true;
+      }
       label.htmlFor = habit_id;
       spanEdit.id = habit_id;
 
@@ -118,11 +141,14 @@ export default class HomePage {
 
       inputStatus.addEventListener("change", e => {
         const { id, checked } = e.target;
-        console.log(id)
+
         if(checked) {
           Habits.setHabitDone(id);
           return
         };
+
+        e.target.checked = true;
+        e.target.disabled = true;
       })
 
       paragraphTitle.textContent = habit_title;
