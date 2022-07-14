@@ -2,6 +2,8 @@ import Form from "../controller/form.controllers.js";
 import Access from "../controller/access.controllers.js";
 import User from "../models/user.models.js"
 import Notification from "../controller/notification.controller.js";
+import Modal from "../controller/modal.controller.js";
+
 (
     async () => {
         const token = localStorage.getItem("@kenziehabits:token");
@@ -31,7 +33,9 @@ document.getElementById("loginFormButton").onclick = async (e) => {
     }
 
     try {
+        Modal.showLoading();
         const loginResponse = await User.logUserIn(formData.email, formData.password);
+        Modal.hideLoading();
         if(loginResponse.status){
             throw loginResponse.message;
         }

@@ -103,7 +103,7 @@
 }
 
 .notificationSuccess {
-    background-color: rgb(var(--success-primary));
+    background-color: rgb(var(--success-secondary));
 }
 
 .notificationError {
@@ -168,7 +168,7 @@
 
 .loadingContainer {
     display: none;
-    z-index: 2;
+    z-index: 3;
     align-items: center;
     justify-content: center;
     position: fixed;
