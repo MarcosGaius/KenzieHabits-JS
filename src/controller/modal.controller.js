@@ -1,7 +1,8 @@
 import Habits from "../models/habit.models.js";
-import User from "../models/user.models.js";
-import Access from "./access.controllers.js";
 import Form from "./form.controllers.js";
+import Access from "./access.controllers.js";
+import Notification from "./notification.controller.js";
+import User from "../models/user.models.js";
 
 export default class Modal {
   static createModalTemplate(modalH2 = "placeholder - título") {
@@ -19,7 +20,7 @@ export default class Modal {
     modalHeader.classList.add("modal__header");
     modalForm.classList.add("modal__form");
     modalDivButtons.classList.add("modal__buttons");
-
+    modalCloseBtn.classList.add("closeModal__btn");
     modalTitle.innerText = `${modalH2}`;
     modalCloseBtn.innerText = "X";
 
@@ -184,7 +185,106 @@ export default class Modal {
     }
   }
 
-  static showEditHabitModal() {
+  static showUserEditModal() {
+    Modal.createModalTemplate("Editar perfil");
+
+    const userData = JSON.parse(localStorage.getItem("@kenziehabits:userdata"));
+
+    const modalForm = document.querySelector(".modal__form");
+    const modalDivButtons = document.querySelector(".modal__buttons");
+
+    const nameDiv = document.createElement("div");
+    const nameLabel = document.createElement("label");
+    const nameInput = document.createElement("input");
+    const urlImageDiv = document.createElement("div");
+    const urlImageLabel = document.createElement("label");
+    const urlImageInput = document.createElement("input");
+    const saveChangesBtn = document.createElement("button");
+
+    nameDiv.classList.add("form__inputContainer");
+    urlImageDiv.classList.add("form__inputContainer");
+    saveChangesBtn.classList.add("mainButton", "mainButton--saveChanges");
+
+    nameLabel.innerText = "Nome";
+    nameInput.value = userData.usr_name;
+    urlImageLabel.innerText = "URL da imagem do perfil";
+    urlImageInput.value = userData.usr_image;
+    saveChangesBtn.innerText = "Salvar alterações";
+
+    nameDiv.append(nameLabel, nameInput);
+    urlImageDiv.append(urlImageLabel, urlImageInput);
+    modalForm.append(nameDiv, urlImageDiv);
+    modalDivButtons.append(saveChangesBtn);
+  }
+
+  static showNewHabitModal() {
+    Modal.createModalTemplate("Criar hábito");
+
+    const modalForm = document.querySelector(".modal__form");
+    const modalDivButtons = document.querySelector(".modal__buttons");
+
+    const titleDiv = document.createElement("div");
+    const titleLabel = document.createElement("label");
+    const titleInput = document.createElement("input");
+    const descriptionDiv = document.createElement("div");
+    const descriptionLabel = document.createElement("label");
+    const descriptionTextarea = document.createElement("textarea");
+    const categoryDiv = document.createElement("div");
+    const categoryLabel = document.createElement("label");
+    const categorySelect = document.createElement("select");
+    const saudeOption = document.createElement("option");
+    const estudosOption = document.createElement("option");
+    const casaOption = document.createElement("option");
+    const trabalhoOption = document.createElement("option");
+    const lazerOption = document.createElement("option");
+    const placeholderOption = document.createElement("option");
+    const insertBtn = document.createElement("button");
+
+    titleDiv.classList.add("form__inputContainer");
+    descriptionDiv.classList.add("form__inputContainer");
+    categoryDiv.classList.add("form__inputContainer");
+    insertBtn.classList.add("mainButton", "mainButton--insert");
+
+    titleLabel.innerText = "Título";
+    titleInput.placeholder = "Digitar título";
+    descriptionLabel.innerText = "Descrição";
+    descriptionTextarea.placeholder = "Digitar descrição";
+    categoryLabel.innerText = "Categoria";
+    placeholderOption.value = "";
+    placeholderOption.setAttribute("selected", "true");
+    placeholderOption.setAttribute("hidden", "true");
+    placeholderOption.setAttribute("disabled", "true");
+    placeholderOption.innerText = "Selecionar categoria";
+    saudeOption.value = "saude";
+    saudeOption.innerText = "Saúde";
+    estudosOption.value = "estudos";
+    estudosOption.innerText = "Estudos";
+    trabalhoOption.value = "trabalho";
+    trabalhoOption.innerText = "Trabalho";
+    casaOption.value = "casa";
+    casaOption.innerText = "Casa";
+    lazerOption.value = "lazer";
+    lazerOption.innerText = "Lazer";
+    insertBtn.innerText = "Inserir";
+
+    categorySelect.append(
+      placeholderOption,
+      saudeOption,
+      estudosOption,
+      trabalhoOption,
+      casaOption,
+      lazerOption
+    );
+
+    titleDiv.append(titleLabel, titleInput);
+    descriptionDiv.append(descriptionLabel, descriptionTextarea);
+    categoryDiv.append(categoryLabel, categorySelect);
+
+    modalForm.append(titleDiv, descriptionDiv, categoryDiv);
+    modalDivButtons.append(insertBtn);
+  }
+
+  static showEditHabitModal(id) {
     Modal.createModalTemplate("Editar hábito");
 
     const smallTitle = document.createElement("label");
@@ -203,12 +303,17 @@ export default class Modal {
     const optionTwo = document.createElement("option");
     const optionThree = document.createElement("option");
     const optionFour = document.createElement("option");
+    const optionFive = document.createElement("option");
 
     const divStatus = document.createElement("div");
     const divTitle = document.createElement("div");
     const divDescription = document.createElement("div");
     const divCategory = document.createElement("div");
 
+    inputCheck.classList.add("checkbox");
+    inputTitle.classList.add("input_title");
+    inputDescription.classList.add("input_descryption");
+    inputCategory.classList.add("input_category");
     divTitle.classList.add("form__inputContainer");
     divDescription.classList.add("form__inputContainer");
     divCategory.classList.add("form__inputContainer");
@@ -226,24 +331,88 @@ export default class Modal {
     deleteHabit.innerText = "Excluir";
     saveHabit.innerText = "Salvar alterações";
 
+    inputTitle.name = "title";
+    inputDescription.name = "description";
+    inputCategory.name = "category";
+
     optionOne.innerText = "Saúde";
     optionTwo.innerText = "Trabalho";
     optionThree.innerText = "Lazer";
     optionFour.innerText = "Casa";
+    optionFive.innerText = "Estudo";
 
     const modalForm = document.querySelector(".modal__form");
     const modalButtons = document.querySelector(".modal__buttons");
 
-    modalForm.append(divTitle, divDescription, divCategory, divStatus);
+    modalForm.append(
+      divTitle,
+      divDescription,
+      divCategory,
+      divStatus,
+      modalButtons
+    );
     inputCategory.append(optionOne, optionTwo, optionThree, optionFour);
     divStatus.append(status, inputCheck);
     divTitle.append(smallTitle, inputTitle);
     divDescription.append(smallDescription, inputDescription);
     divCategory.append(smallCategory, inputCategory);
     modalButtons.append(deleteHabit, saveHabit);
+
+    deleteHabit.onclick = () => {
+      const modal = document.querySelector(".modalWrapper");
+      modal.remove();
+
+      Modal.showDeleteHabitModal();
+    };
+
+    const closeModal__btn = document.querySelector(".closeModal__btn");
+    closeModal__btn.onclick = () => {
+      const modal = document.querySelector(".modalWrapper");
+      modal.remove();
+    };
+
+    saveHabit.onclick = async (e) => {
+      e.preventDefault();
+
+      const formData = Form.isFormValid(e);
+
+      if (formData.title === undefined || formData.description === undefined) {
+        Form.alertFieldInvalid(formData);
+        return;
+      }
+
+      const updateObj = {
+        habit_title: `${formData.title}`,
+        habit_description: `${formData.description}`,
+        habit_category: `${formData.category}`,
+      };
+
+      try {
+        const updateResponse = await Habits.updateHabit(id, updateObj);
+        if (updateResponse.status) {
+          throw updateResponse.message;
+        } else {
+          const updateNotification = Notification.createNotification(
+            "Hábito atualizado com sucesso!",
+            true
+          );
+          Notification.showNotification(updateNotification);
+          setTimeout(() => {
+            Access.redirectToHomePage();
+          }, 2000);
+        }
+      } catch (error) {
+        const errorNotification = Notification.createNotification(error, false);
+        Notification.showNotification(errorNotification);
+      }
+      await Habits.updateHabit(id, updateObj);
+      if (inputCheck.checked == true) {
+        await Habits.setHabitDone(id);
+      }
+    };
   }
 
-  static showDeleteHabitModal() {
+  static showDeleteHabitModal(id) {
     Modal.createModalTemplate("Excluir hábito");
 
     const divTitle = document.createElement("div");
@@ -269,6 +438,26 @@ export default class Modal {
     modalForm.append(divTitle);
     modalButtons.append(cancelDeletion, confirmDeletion);
     divTitle.append(title, titleDescription);
+
+    cancelDeletion.onclick = () => {
+      const modal = document.querySelector(".modalWrapper");
+      modal.remove();
+      Modal.showEditHabitModal();
+    };
+
+    confirmDeletion.onclick = (e) => {
+      e.preventDefault();
+      Habits.deleteHabit(id);
+
+      const deleteNotification = Notification.createNotification(
+        "Hábito deletado com sucesso!",
+        true
+      );
+      Notification.showNotification(deleteNotification);
+      setTimeout(() => {
+        Access.redirectToHomePage();
+      }, 2000);
+    };
   }
 
   static showLoading(){

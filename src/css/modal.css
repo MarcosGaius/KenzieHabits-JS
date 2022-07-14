@@ -107,7 +107,14 @@
     font-weight: 600;
 }
 
+.cancel__deletion:hover {
+    background: var(--grey-3);
+}
+
 .confirm__deletion {
     background: var(--error-secondary);
-    
+}
+
+.confirm__deletion:hover {
+    background: var(--error-primary);
 }

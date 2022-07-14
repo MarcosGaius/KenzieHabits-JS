@@ -11,26 +11,34 @@ export default class User {
       },
       body: JSON.stringify(editObj),
     })
-    .then(async (res) => {
-      if(!res.ok){ throw ({status: res.status, statusText: res.statusText, message: res.message});}
+      .then(async (res) => {
+        if (!res.ok) {
+          throw {
+            status: res.status,
+            statusText: res.statusText,
+            message: res.message,
+          };
+        }
 
-      res = await res.json();
+        res = await res.json();
 
-      localStorage.setItem(
-        "@kenziehabits:userdata",
-        JSON.stringify(res.response)
-      );
-      localStorage.setItem("@kenziehabits:token", res.token);
+        localStorage.setItem(
+          "@kenziehabits:userdata",
+          JSON.stringify(res.response)
+        );
+        localStorage.setItem("@kenziehabits:token", res.token);
 
-      return res;
-    })
-    .catch((err) => {return err});
+        return res;
+      })
+      .catch((err) => {
+        return err;
+      });
   }
 
   static logUserOut() {
     localStorage.removeItem("@kenziehabits:userdata");
     localStorage.removeItem("@kenziehabits:token");
-    Access.redirectToLoginPage()
+    Access.redirectToLoginPage();
   }
 
   static async logUserIn(email, password) {
@@ -49,7 +57,13 @@ export default class User {
       .then(async (res) => {
         const resData = await res.json();
 
-        if(!res.ok){ throw ({status: res.status, statusText: res.statusText, message: resData.message});}
+        if (!res.ok) {
+          throw {
+            status: res.status,
+            statusText: res.statusText,
+            message: resData.message,
+          };
+        }
 
         localStorage.setItem(
           "@kenziehabits:userdata",
@@ -65,5 +79,4 @@ export default class User {
 
     return response;
   }
-
 }
