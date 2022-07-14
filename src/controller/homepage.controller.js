@@ -11,6 +11,13 @@ export default class HomePage {
     if (this.dataUser === null || this.token === null) {
       Access.redirectToLoginPage();
     }
+    else if(Access.isTokenExpired(this.token)){
+      const tokenExpiredNot = Notification.createNotification("Sessão expirada, logue-se novamente.", false);
+      Notification.showNotification(tokenExpiredNot);
+      setTimeout(() => {
+        Access.redirectToLoginPage();
+      }, 1000)
+    }
   }
 
   static addDom() {
