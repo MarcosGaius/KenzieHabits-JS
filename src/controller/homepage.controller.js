@@ -49,7 +49,9 @@ export default class HomePage {
     });
 
     document.querySelector(".doneButton").addEventListener("click", async () => {
+      Modal.showLoading();
       const arrayHabits = await Habits.getAllHabits();
+      Modal.hideLoading();
       const filterHabits = arrayHabits.filter(({ habit_status }) => habit_status === true);
       const listHabits = document.querySelector(".listHabits");
 
@@ -62,7 +64,9 @@ export default class HomePage {
   }
 
   static async addItemsToList() {
+    Modal.showLoading();
     const arrayHabits = await Habits.getAllHabits();
+    Modal.hideLoading();
     const listHabits = document.querySelector(".listHabits");
 
     listHabits.textContent = "";
