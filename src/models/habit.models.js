@@ -1,25 +1,33 @@
 export default class Habits {
   static baseUrl = "https://habits-kenzie.herokuapp.com/api";
   static headers = {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${localStorage.getItem("@kenziehabits:token")}`
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${localStorage.getItem("@kenziehabits:token")}`,
   };
-  
+
   static async getDoneHabits() {
     return await fetch(`${this.baseUrl}/habits/`, {
       method: "GET",
-      headers: this.headers
+      headers: this.headers,
     })
-    .then(async (res) => {
-      if(!res.ok){ throw ({status: res.status, statusText: res.statusText, message: res.message});}
+      .then(async (res) => {
+        if (!res.ok) {
+          throw {
+            status: res.status,
+            statusText: res.statusText,
+            message: res.message,
+          };
+        }
 
-      res = await res.json();
+        res = await res.json();
 
-      const doneHabits = res.filter((habit) => habit.habit_status)
+        const doneHabits = res.filter((habit) => habit.habit_status);
 
-      return doneHabits;
-    })
-    .catch((err) => {return err});
+        return doneHabits;
+      })
+      .catch((err) => {
+        return err;
+      });
   }
 
   static async updateHabit(id, updateObj) {
@@ -28,66 +36,108 @@ export default class Habits {
       headers: this.headers,
       body: JSON.stringify(updateObj),
     })
-      .then((res) => res.json())
-      .then((res) => {
-        return res
+      .then(async (res) => {
+        if (!res.ok) {
+          throw {
+            status: res.status,
+            statusText: res.statusText,
+            message: res.message,
+          };
+        }
+
+        res = await res.json();
+
+        const doneHabits = res.filter((habit) => habit.habit_status);
+
+        return doneHabits;
       })
       .catch((err) => {
-        console.error(err);
         return err;
       });
   }
 
   static async setHabitDone(id) {
     return await fetch(this.baseUrl + `/habits/complete/${id}`, {
-      method: 'PATCH',
-      headers: this.headers
+      method: "PATCH",
+      headers: this.headers,
     })
-    .then(async (res) => {
-       return await res.json()
-    })
-    .catch((err) => {
-      console.error(err)
-      return err
-    })
+      .then(async (res) => {
+        if (!res.ok) {
+          throw {
+            status: res.status,
+            statusText: res.statusText,
+            message: res.message,
+          };
+        }
+
+        res = await res.json();
+
+        const doneHabits = res.filter((habit) => habit.habit_status);
+
+        return doneHabits;
+      })
+      .catch((err) => {
+        return err;
+      });
   }
 
   static async createNewHabit(habitObj) {
     return await fetch(this.baseUrl + "/habits", {
       method: "POST",
       headers: this.headers,
-      body: JSON.stringify(habitObj)
+      body: JSON.stringify(habitObj),
     })
-    .then((res) => res.json())
-    .catch((err) => {
-      console.error(err)
-      return err
-    })
+      .then(async (res) => {
+        if (!res.ok) {
+          throw {
+            status: res.status,
+            statusText: res.statusText,
+            message: res.message,
+          };
+        }
+
+        res = await res.json();
+
+        const doneHabits = res.filter((habit) => habit.habit_status);
+
+        return doneHabits;
+      })
+      .catch((err) => {
+        return err;
+      });
   }
 
   static async getAllHabits() {
     return await fetch(`${this.baseUrl}/habits`, {
       method: "GET",
-      headers: this.headers
+      headers: this.headers,
     })
-    .then(async (res) => {
-      if(!res.ok){ throw ({status: res.status, statusText: res.statusText, message: res.message});}
+      .then(async (res) => {
+        if (!res.ok) {
+          throw {
+            status: res.status,
+            statusText: res.statusText,
+            message: res.message,
+          };
+        }
 
-      res = await res.json();
-      
-      return res;
-    })
-    .catch((err) => {return err});
+        res = await res.json();
+
+        return res;
+      })
+      .catch((err) => {
+        return err;
+      });
   }
 
   static async deleteHabit(id) {
     return await fetch(`${this.baseUrl}/habits/${id}`, {
       method: "DELETE",
-      headers: this.headers
+      headers: this.headers,
     })
-    .then((res) => res.json())
-    .catch((err) => {
-      return err
-    })
+      .then((res) => res.json())
+      .catch((err) => {
+        return err;
+      });
   }
 }
