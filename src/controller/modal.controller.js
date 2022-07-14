@@ -64,8 +64,8 @@ export default class Modal {
 
     nameDiv.append(nameLabel, nameInput);
     urlImageDiv.append(urlImageLabel, urlImageInput);
-    modalForm.append(nameDiv, urlImageDiv);
     modalDivButtons.append(saveChangesBtn);
+    modalForm.append(nameDiv, urlImageDiv, modalDivButtons);
 
     saveChangesBtn.onclick = (e) => {
       e.preventDefault()
@@ -283,5 +283,3 @@ export default class Modal {
     return;
   }
 }
-
-// Modal.showNewHabitModal()
