@@ -22,11 +22,36 @@
     border-radius: 8px;
     width: 95%;
     padding: 2rem;
+    animation: showModal 200ms;
+}
+
+@keyframes showModal {
+    from {
+        transform: scale(0.1,0.1);
+    }
+    
+    to {
+        transform: scale(1,1);
+    }
 }
 
 @media screen and (min-width: 600px) {
     .modal {
         width: 31rem;
+    }
+}
+
+.modal--hide-modal {
+    animation: hideModal 200ms;
+}
+
+@keyframes hideModal {
+    from {
+        transform: scale(1,1);
+    }
+    
+    to {
+        transform: scale(0.1,0.1);
     }
 }
 
